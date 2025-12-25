@@ -1,0 +1,9 @@
+Django==5.2.9
+ultralytics
+torch
+torchvision
+torchaudio
+opencv-python
+numpy
+twilio
+gunicorn
