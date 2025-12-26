@@ -1370,6 +1370,25 @@
         const res = await fetch('/detect/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ frame: base64 }) });
         const data = await res.json();
 
+        // Check if we're in demo mode
+        if (data?.demo_mode) {
+          // Show demo mode notification
+          if (!document.getElementById('demoNotification')) {
+            const demoDiv = document.createElement('div');
+            demoDiv.id = 'demoNotification';
+            demoDiv.style.cssText = `
+              position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+              background: linear-gradient(135deg, #ff8800, #ff6600);
+              color: white; padding: 12px 20px; border-radius: 8px;
+              font-weight: 700; font-size: 14px; z-index: 10000;
+              box-shadow: 0 4px 12px rgba(255, 136, 0, 0.4);
+              border: 1px solid rgba(255, 255, 255, 0.2);
+            `;
+            demoDiv.innerHTML = '<i class="fas fa-info-circle" style="margin-right: 8px;"></i>Demo Mode - YOLO not available on free tier';
+            document.body.appendChild(demoDiv);
+          }
+        }
+
         // show toast when backend reports SMS sent
         if (data?.sms_sent) {
           showSmsToast('Automatic fire alert SMS sent to emergency contacts / ऑटोमेटिक आग का अलर्ट SMS emergency contacts को भेजा गया');

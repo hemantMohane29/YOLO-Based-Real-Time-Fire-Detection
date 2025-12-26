@@ -1,0 +1,14 @@
+Django==5.2.9
+ultralytics
+torch
+torchvision
+torchaudio
+opencv-python-headless
+numpy
+twilio
+gunicorn
+python-dotenv
+whitenoise
+psycopg2-binary
+dj-database-url
+psutil
