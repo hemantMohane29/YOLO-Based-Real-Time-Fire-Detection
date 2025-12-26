@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: fire-detector
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "cd Fire_detector && gunicorn Fire_detector.wsgi:application"
+    plan: free
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_WHATSAPP_FROM
+        sync: false
+      - key: TWILIO_PHONE_NUMBER
+        sync: false

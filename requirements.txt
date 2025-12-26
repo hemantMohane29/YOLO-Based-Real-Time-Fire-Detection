@@ -3,7 +3,11 @@ ultralytics
 torch
 torchvision
 torchaudio
-opencv-python
+opencv-python-headless
 numpy
 twilio
 gunicorn
+python-dotenv
+whitenoise
+psycopg2-binary
+dj-database-url
