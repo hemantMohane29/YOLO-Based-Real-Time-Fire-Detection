@@ -1,0 +1,88 @@
+# 🔥 Fire Detection System - Quick Start Guide
+
+## 📋 What You Have:
+- FireDetectionSystem.exe (28.5 MB)
+- This Quick Start Guide
+
+## 🚀 How to Use:
+
+### 1. First Time Setup:
+1. Extract all files to a folder (e.g., C:\FireDetection\)
+2. Double-click FireDetectionSystem.exe
+3. Wait 30-60 seconds for the system to start
+4. A browser window will open automatically at http://localhost:8000
+
+### 2. Using the Fire Detection System:
+1. **Allow Camera Access**: Click "Allow" when browser asks for camera permission
+2. **Live Monitoring**: The system will start monitoring your camera feed automatically
+3. **Fire Detection**: AI will analyze frames and show confidence percentage
+4. **Manual Alerts**: Click "Send Alert" button for immediate notifications
+5. **Dashboard**: View real-time stats, FPS, and system status
+
+## 🎯 Features:
+- ✅ Real-time fire detection using AI
+- ✅ Professional web dashboard
+- ✅ Manual emergency alert system
+- ✅ Demo mode for low-memory systems
+- ✅ Bilingual alerts (English/Hindi)
+- ✅ SMS integration (optional)
+
+## ⚙️ System Requirements:
+- **OS**: Windows 10/11 (64-bit)
+- **RAM**: 2GB minimum (4GB recommended)
+- **Camera**: Any USB webcam or built-in camera
+- **Browser**: Chrome, Firefox, or Edge
+- **Internet**: Optional (for SMS alerts only)
+
+## 🔧 Troubleshooting:
+
+### App Won't Start:
+- Run as Administrator
+- Check Windows Defender isn't blocking it
+- Ensure you have camera connected
+
+### Browser Doesn't Open:
+- Manually open browser and go to: http://localhost:8000
+- Wait 60 seconds after starting the app
+
+### Camera Not Working:
+- Check browser permissions (click camera icon in address bar)
+- Close other apps using the camera
+- Try refreshing the browser page
+
+### Performance Issues:
+- Close other applications to free up memory
+- Ensure good lighting for better detection
+- System will automatically switch to demo mode if low memory
+
+## 📱 SMS Alerts (Optional):
+To enable SMS alerts:
+1. Sign up at twilio.com
+2. Get Account SID and Auth Token
+3. Create a .env file with your credentials:
+   ```
+   TWILIO_ACCOUNT_SID=your_account_sid
+   TWILIO_AUTH_TOKEN=your_auth_token
+   TWILIO_PHONE_NUMBER=+1234567890
+   ```
+4. Restart the application
+
+## 🛡️ Safety Notice:
+This system assists in fire detection but should NOT be your only fire safety measure. Always maintain proper fire extinguishers, smoke detectors, and emergency procedures.
+
+## 📞 Support:
+- GitHub: https://github.com/hemantMohane29/YOLO-Based-Real-Time-Fire-Detection
+- Issues: Report bugs on GitHub Issues page
+- Version: 1.0 (Standalone Executable)
+
+## 🔄 How It Works:
+1. **Camera Capture**: Continuously captures video frames
+2. **AI Analysis**: YOLO model analyzes each frame for fire/smoke
+3. **Confidence Scoring**: Shows detection confidence percentage
+4. **Stability Check**: Requires multiple confirmations to prevent false alarms
+5. **Alert System**: Sends notifications when fire is confirmed
+6. **Dashboard Updates**: Real-time UI updates with detection status
+
+---
+**Made with ❤️ by Hemant Mohane**
+**Stay Safe! 🔥**

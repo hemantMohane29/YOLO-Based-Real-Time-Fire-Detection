@@ -33,7 +33,7 @@ block_cipher = None
 
 # Data files to include
 datas = [
-    ('Fire_detector/Fire_detector/templates', 'Fire_detector/templates'),
+    ('Fire_detector/Home/templates', 'Fire_detector/Home/templates'),
     ('Fire_detector/static', 'Fire_detector/static'),
     ('Fire_detector/ML_Model', 'Fire_detector/ML_Model'),
     ('Fire_detector/manage.py', 'Fire_detector'),
@@ -127,8 +127,8 @@ def build_executable():
     print("🔨 Building executable...")
     print("⏳ This may take several minutes...")
     
-    # Run PyInstaller
-    cmd = "pyinstaller --clean --onefile FireDetectionSystem.spec"
+    # Run PyInstaller with the spec file
+    cmd = "pyinstaller --clean FireDetectionSystem.spec"
     result = os.system(cmd)
     
     if result == 0:

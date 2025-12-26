@@ -1,0 +1,272 @@
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+from pathlib import Path
+import base64
+import cv2
+import numpy as np
+import json
+import os
+import time
+import logging
+
+# ================= LOGGING =================
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# ================= OPTIONAL TWILIO =================
+try:
+    from twilio.rest import Client as TwilioClient
+    from twilio.base.exceptions import TwilioRestException
+except Exception:
+    TwilioClient = None
+    TwilioRestException = Exception
+
+# ================= OPTIONAL YOLO =================
+YOLO = None
+model_available = False
+
+# Only try to import YOLO if we have enough memory
+try:
+    import psutil
+    memory_gb = psutil.virtual_memory().total / (1024**3)
+    
+    # Only load YOLO if we have more than 1GB RAM
+    if memory_gb > 1.0:
+        from ultralytics import YOLO
+        model_available = True
+        logger.info(f"System has {memory_gb:.1f}GB RAM - YOLO enabled")
+    else:
+        logger.warning(f"System has {memory_gb:.1f}GB RAM - YOLO disabled for memory conservation")
+except Exception as e:
+    logger.warning(f"YOLO not available: {e}")
+    YOLO = None
+
+# ================= BASE DIR =================
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# ================= MODEL PATH =================
+MODEL_PATH = BASE_DIR / "ML_Model" / "fire_model.pt"
+
+# Global model cache - will be loaded on first use
+_model_cache = None
+
+def get_model():
+    """Load model on demand to save memory"""
+    global _model_cache
+    
+    if not model_available:
+        logger.warning("YOLO not available - running in demo mode")
+        return None
+    
+    if _model_cache is None:
+        if YOLO is None:
+            logger.warning("YOLO not installed. Detection disabled.")
+            return None
+            
+        try:
+            _model_cache = YOLO(str(MODEL_PATH))
+            logger.info("YOLO model loaded successfully from %s", MODEL_PATH)
+        except Exception as e:
+            logger.exception("Failed to load YOLO model: %s", e)
+            return None
+    
+    return _model_cache
+
+# ================= STABILITY BUFFER =================
+fire_buffer = []
+
+# ================= CONTACT LIST =================
+CONTACTS = [
+    ("Hemant Mohane", "+917974942457"),
+    ("zayed", "+918252355135"),
+    ("Rudrashak", "+919131849771"),
+    ("abhishek", "+919302596728"),
+]
+
+ALERT_COOLDOWN = 300  # seconds
+_last_alert_ts = 0
+
+# ================= SEND SMS FUNCTION =================
+def send_sms_to_contacts(message: str) -> bool:
+    if TwilioClient is None:
+        logger.warning("Twilio not installed. SMS skipped.")
+        return False
+
+    sid = os.environ.get("TWILIO_ACCOUNT_SID")
+    token = os.environ.get("TWILIO_AUTH_TOKEN")
+    wa_from = os.environ.get("TWILIO_WHATSAPP_FROM")
+    sms_from = os.environ.get("TWILIO_PHONE_NUMBER")
+
+    if not sid or not token:
+        logger.error("Twilio SID/Auth token missing.")
+        return False
+
+    try:
+        client = TwilioClient(sid, token)
+    except Exception as e:
+        logger.exception("Twilio client error: %s", e)
+        return False
+
+    sent_any = False
+    body = f"🔥 FIRE ALERT 🔥\n{message}"
+
+    for name, to in CONTACTS:
+        # WhatsApp
+        if wa_from:
+            try:
+                client.messages.create(
+                    body=body,
+                    from_=wa_from,
+                    to=f"whatsapp:{to}"
+                )
+                sent_any = True
+            except Exception as e:
+                logger.error("WhatsApp failed to %s: %s", to, e)
+
+        # SMS
+        if sms_from:
+            try:
+                client.messages.create(
+                    body=body,
+                    from_=sms_from,
+                    to=to
+                )
+                sent_any = True
+            except Exception as e:
+                logger.error("SMS failed to %s: %s", to, e)
+
+    return sent_any
+
+# ================= HOME VIEW =================
+def home(request):
+    return render(request, "Home/home.html")
+
+# ================= DETECT VIEW =================
+@csrf_exempt
+def detect(request):
+    global fire_buffer, _last_alert_ts
+
+    if request.method != "POST":
+        return JsonResponse({"error": "POST method required"}, status=405)
+
+    # Load model on demand
+    model = get_model()
+    if model is None:
+        # Demo mode - simulate fire detection for testing
+        logger.info("Running in demo mode - simulating fire detection")
+        
+        # Simple demo logic - randomly detect "fire" occasionally
+        import random
+        demo_fire = 1 if random.random() < 0.1 else 0  # 10% chance
+        demo_conf = random.uniform(60, 90) if demo_fire else random.uniform(10, 40)
+        
+        return JsonResponse({
+            "fire": demo_fire,
+            "conf": round(demo_conf, 2),
+            "sms_sent": False,
+            "demo_mode": True,
+            "message": "Demo mode - YOLO not available on free tier"
+        })
+
+    try:
+        body = json.loads(request.body.decode("utf-8"))
+        frame_data = body.get("frame")
+
+        if not frame_data:
+            return JsonResponse({"error": "No frame received"}, status=400)
+
+        # -------- Base64 Decode --------
+        if "," in frame_data:
+            frame_data = frame_data.split(",")[1]
+
+        img_bytes = base64.b64decode(frame_data)
+        np_arr = np.frombuffer(img_bytes, np.uint8)
+        frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+
+        if frame is None:
+            return JsonResponse({"error": "Invalid image"}, status=400)
+
+        # Resize frame to reduce memory usage
+        height, width = frame.shape[:2]
+        if width > 640:
+            scale = 640 / width
+            new_width = 640
+            new_height = int(height * scale)
+            frame = cv2.resize(frame, (new_width, new_height))
+
+        # -------- YOLO Prediction --------
+        results = model.predict(frame, conf=0.35, imgsz=640, verbose=False)
+
+        fire_detected = 0
+        best_conf = 0.0
+        CONF_THRESHOLD = 0.50
+
+        if results and results[0].boxes:
+            for box in results[0].boxes:
+                cls_id = int(box.cls[0])
+                conf = float(box.conf[0])
+                if cls_id == 0 and conf >= CONF_THRESHOLD:
+                    fire_detected = 1
+                    best_conf = max(best_conf, conf)
+
+        # -------- Stability Filter --------
+        fire_buffer.append(fire_detected)
+        if len(fire_buffer) > 10:
+            fire_buffer.pop(0)
+
+        stable_fire = 1 if sum(fire_buffer) >= 6 else 0
+
+        # -------- SMS Throttling --------
+        sms_sent = False
+        now = time.time()
+        if stable_fire == 1 and (now - _last_alert_ts) > ALERT_COOLDOWN:
+            confidence_pct = round(best_conf * 100, 2)
+            message = (
+                f"Automatic fire detection.\n"
+                f"Confidence: {confidence_pct}%\n"
+                "Please check immediately.\n"
+                "⚠️ आग का अलर्ट – कृपया तुरंत जांच करें।"
+            )
+            sms_sent = send_sms_to_contacts(message)
+            if sms_sent:
+                _last_alert_ts = now
+
+        return JsonResponse({
+            "fire": stable_fire,
+            "conf": round(best_conf * 100, 2),
+            "sms_sent": sms_sent
+        })
+
+    except Exception as e:
+        logger.exception("Detect error: %s", e)
+        return JsonResponse({"error": str(e)}, status=500)
+
+# ================= MANUAL ALERT =================
+@csrf_exempt
+def send_alert(request):
+    global _last_alert_ts
+
+    if request.method != "POST":
+        return JsonResponse({"error": "POST method required"}, status=405)
+
+    try:
+        body = json.loads(request.body.decode("utf-8"))
+        raw_message = body.get("message", "Manual fire alert triggered")
+
+        message = (
+            f"{raw_message}\n"
+            "This is a manual alert.\n"
+            "⚠️ मैन्युअल आग अलर्ट – तुरंत जांच करें।"
+        )
+
+        sms_sent = send_sms_to_contacts(message)
+        if sms_sent:
+            _last_alert_ts = time.time()
+
+        return JsonResponse({"sms_sent": sms_sent})
+
+    except Exception as e:
+        logger.exception("Manual alert error: %s", e)
+        return JsonResponse({"error": str(e)}, status=500)

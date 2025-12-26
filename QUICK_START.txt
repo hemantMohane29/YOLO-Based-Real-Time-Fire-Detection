@@ -1,0 +1,35 @@
+# Fire Detection System - Quick Start
+
+## How to Use:
+
+1. **First Time Setup:**
+   - Extract all files to a folder
+   - Run FireDetectionSystem.exe
+   - Wait 30-60 seconds for startup
+
+2. **Using the System:**
+   - Browser will open automatically
+   - Allow camera access when prompted
+   - System will start monitoring for fire
+
+3. **Features:**
+   - Real-time fire detection
+   - Web dashboard interface
+   - Manual alert system
+   - Demo mode on low-memory systems
+
+## System Requirements:
+- Windows 10/11 (64-bit)
+- 2GB RAM minimum
+- Webcam or camera
+- Internet browser
+
+## Troubleshooting:
+- If browser doesn't open: Go to http://localhost:8000
+- If camera doesn't work: Check browser permissions
+- If app won't start: Run as Administrator
+
+## Support:
+GitHub: https://github.com/hemantMohane29/YOLO-Based-Real-Time-Fire-Detection
+
+Version: 1.0 (Lightweight)

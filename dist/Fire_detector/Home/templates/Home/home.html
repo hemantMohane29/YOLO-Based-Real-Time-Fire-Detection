@@ -1,0 +1,1540 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Professional Fire Detection System | Enterprise AI Monitoring</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Poppins:wght@600;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* Reset + root */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      margin: 0
+    }
+
+    :root {
+      --header-h: 65px;
+      --right-width: 360px;
+
+      /* Professional Fire Detection Color Scheme */
+      --bg-primary: #000000;
+      --bg-secondary: #0a0a0a;
+      --bg-tertiary: #111111;
+      --card-bg: rgba(20, 20, 20, 0.95);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --muted: #8a8a8a;
+      --text-primary: #ffffff;
+      --text-secondary: #cccccc;
+      --fire-red: #ff3333;
+      --fire-red-dark: #cc0000;
+      --safe-green: #00cc66;
+      --warning-orange: #ff8800;
+      --accent-blue: #0066ff;
+      --radius: 8px;
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background: var(--bg-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      /* Chrome-specific optimizations */
+      -webkit-overflow-scrolling: touch;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+    }
+
+    /* App container: fills browser window */
+    .app {
+      width: 100%;
+      height: 100vh;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: var(--bg-primary);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+      overflow: hidden;
+      max-width: 100%;
+    }
+
+    /* Header */
+    .header {
+      height: var(--header-h);
+      min-height: var(--header-h);
+      max-height: var(--header-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 18px;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius);
+      border: 1px solid var(--card-border);
+      border-bottom: 2px solid var(--fire-red);
+      transition: var(--transition);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      flex-shrink: 0;
+    }
+
+    .header:hover {
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .header-left {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      background: linear-gradient(135deg, var(--fire-red), var(--fire-red-dark));
+      box-shadow: 0 4px 12px rgba(255, 51, 51, 0.4);
+      transition: var(--transition);
+      border: 1px solid rgba(255, 51, 51, 0.3);
+      flex-shrink: 0;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(255, 51, 51, 0.6);
+    }
+
+    .brand h1 {
+      font-family: "Poppins", Inter;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--text-primary);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      line-height: 1.3;
+    }
+
+    .brand p {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      margin-top: 2px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .header-center {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 12px
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 75px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      transition: var(--transition);
+      background: var(--bg-secondary);
+      border: 1px solid var(--card-border);
+      flex-shrink: 0;
+    }
+
+    .stat:hover {
+      background: var(--bg-tertiary);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .stat .val {
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    .stat .val.active {
+      color: var(--safe-green);
+    }
+
+    .status-chip {
+      padding: 10px 16px;
+      border-radius: 6px;
+      background: var(--bg-secondary);
+      color: var(--safe-green);
+      border: 1px solid var(--safe-green);
+      font-weight: 700;
+      font-size: 12px;
+      transition: var(--transition);
+      cursor: default;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .status-chip:hover {
+      background: rgba(0, 204, 102, 0.1);
+      border-color: var(--safe-green);
+    }
+
+    /* Small CTA/button styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 0;
+      cursor: pointer;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-weight: 700;
+      background: transparent;
+      color: var(--text-secondary);
+      transition: var(--transition);
+    }
+
+    .btn:hover {
+      color: var(--text-primary);
+      transform: translateY(-1px);
+    }
+
+    .btn.primary {
+      background: linear-gradient(90deg, var(--fire-red), var(--fire-red-dark));
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(255, 51, 51, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .btn.ghost {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    /* MAIN area */
+    .main {
+      flex: 1 1 auto;
+      display: flex;
+      gap: 16px;
+      min-height: 0;
+      overflow: hidden;
+      flex-shrink: 1;
+    }
+
+    /* LEFT column */
+    .left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 0;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .video-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--card-border);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+    }
+
+    .video-card:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.9);
+    }
+
+    .video-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .video-header h2 {
+      font-size: 14px;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .video-tags {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .tag {
+      padding: 7px 14px;
+      border-radius: 4px;
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid var(--card-border);
+      transition: var(--transition);
+      cursor: default;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .tag:hover {
+      background: var(--bg-tertiary);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .tag.live {
+      background: var(--fire-red);
+      color: var(--text-primary);
+      font-weight: 700;
+      border-color: var(--fire-red-dark);
+      box-shadow: 0 0 8px rgba(255, 51, 51, 0.5);
+    }
+
+    .tag.live:hover {
+      background: var(--fire-red-dark);
+      box-shadow: 0 0 12px rgba(255, 51, 51, 0.7);
+    }
+
+    .video-wrap {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      flex: 1 1 auto;
+      min-height: 0;
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      display: block;
+    }
+
+    #video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #000;
+      /* Chrome-specific optimizations */
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      will-change: contents;
+    }
+
+    .live-pill {
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      background: rgba(0, 0, 0, 0.85);
+      padding: 8px 14px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 11px;
+      color: var(--text-primary);
+      border: 1px solid var(--fire-red);
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      backdrop-filter: blur(4px);
+      z-index: 10;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--fire-red);
+      box-shadow: 0 0 8px var(--fire-red);
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+      }
+    }
+
+    .video-badges {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-end;
+    }
+
+    .vb {
+      background: rgba(0, 0, 0, 0.85);
+      padding: 8px 12px;
+      border-radius: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      border: 1px solid var(--card-border);
+      min-width: 80px;
+      text-align: center;
+      backdrop-filter: blur(4px);
+      transition: var(--transition);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+    }
+
+    .vb:hover {
+      background: rgba(0, 0, 0, 0.95);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .vb strong {
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 14px;
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* CHARTS — FIXED HEIGHT */
+    .charts {
+      height: var(--charts-h);
+      min-height: var(--charts-h);
+      max-height: var(--charts-h);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      min-width: 0;
+      flex-shrink: 0;
+    }
+
+    .chart {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--card-border);
+      padding: 12px;
+      overflow: hidden;
+      transition: var(--transition);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    .chart:hover {
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+    }
+
+    .chart h3 {
+      color: var(--text-secondary);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .chart-container {
+      height: calc(100% - 30px);
+      border-radius: 4px;
+      background: var(--bg-primary);
+      border: 1px solid var(--card-border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chart-canvas {
+      position: absolute;
+      left: 30px;
+      right: 8px;
+      top: 8px;
+      bottom: 20px;
+      width: calc(100% - 38px);
+      height: calc(100% - 28px);
+    }
+
+    .chart-y-axis {
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 20px;
+      width: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-size: 9px;
+      color: var(--muted);
+      padding-right: 4px;
+      text-align: right;
+      z-index: 1;
+    }
+
+    .chart-x-axis {
+      position: absolute;
+      bottom: 0;
+      left: 30px;
+      right: 8px;
+      height: 20px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      color: var(--muted);
+      padding-top: 4px;
+      z-index: 1;
+    }
+
+    .detection-bars {
+      position: absolute;
+      left: 30px;
+      right: 8px;
+      top: 8px;
+      bottom: 20px;
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      padding: 0 2px;
+    }
+
+    .detection-bar {
+      flex: 1;
+      background: var(--fire-red);
+      border-radius: 2px 2px 0 0;
+      min-height: 2px;
+      transition: height 0.3s ease;
+      opacity: 0.9;
+      box-shadow: 0 -2px 6px rgba(255, 51, 51, 0.5);
+    }
+
+    .detection-bar:hover {
+      opacity: 1;
+      box-shadow: 0 -2px 8px rgba(255, 51, 51, 0.7);
+    }
+
+    /* RIGHT column — FIXED WIDTH and scrollable */
+    .right {
+      width: var(--right-width);
+      min-width: var(--right-width);
+      max-width: var(--right-width);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 0;
+      flex-shrink: 0;
+    }
+
+    .right-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    /* Contacts card styles */
+    .contacts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .contact {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      padding: 8px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.02);
+    }
+
+    .contact .meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .contact .name {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 13px;
+    }
+
+    .contact .phone {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .contact a {
+      color: var(--accent-blue);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    /* Custom scrollbar styling */
+    .right-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .right-scroll::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 10px;
+    }
+
+    .right-scroll::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+
+    .right-scroll::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .summary {
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      border: 1px solid var(--safe-green);
+      transition: var(--transition);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+      flex-shrink: 0;
+    }
+
+    .summary:hover {
+      border-color: var(--safe-green);
+      box-shadow: 0 4px 12px rgba(0, 204, 102, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .summary .title {
+      font-family: "Poppins", Inter;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--safe-green);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1.3;
+    }
+
+    .summary .subtitle {
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .card-sm {
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      transition: var(--transition);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+      flex-shrink: 0;
+    }
+
+    .card-sm:hover {
+      border-color: rgba(255, 255, 255, 0.12);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+    }
+
+    .card-sm .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-secondary);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+
+    .big-num {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--safe-green);
+      line-height: 1.2;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    .big-num.safe {
+      color: var(--safe-green);
+    }
+
+    .big-num.alert {
+      color: var(--fire-red);
+      text-shadow: 0 2px 8px rgba(255, 51, 51, 0.6);
+    }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: var(--bg-secondary);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 10px;
+      border: 1px solid var(--card-border);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    .progress .fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--safe-green), var(--warning-orange), var(--fire-red));
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 8px rgba(255, 51, 51, 0.4);
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .status-grid label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-bottom: 6px;
+      display: block;
+      font-weight: 600;
+    }
+
+    .status-grid strong {
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .system-info {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+      color: var(--muted);
+    }
+
+    .system-info div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .system-info div:last-child {
+      border-bottom: none;
+    }
+
+    .system-info div span:last-child {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* footer */
+    .footer {
+      height: 40px;
+      min-height: 40px;
+      max-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px;
+      color: var(--muted);
+      font-size: 12px;
+      border-radius: var(--radius);
+      background: var(--bg-tertiary);
+      border: 1px solid var(--card-border);
+      flex-shrink: 0;
+    }
+
+    .footer:hover {
+      background: linear-gradient(180deg, rgba(6, 8, 14, 0.25), rgba(6, 8, 14, 0.20));
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Alert state improvements */
+    .status-chip.alert {
+      background: var(--fire-red);
+      color: var(--text-primary);
+      border-color: var(--fire-red-dark);
+      animation: alert-pulse 1.5s infinite;
+      box-shadow: 0 0 12px rgba(255, 51, 51, 0.6);
+    }
+
+    @keyframes alert-pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        box-shadow: 0 0 12px rgba(255, 51, 51, 0.6);
+      }
+
+      50% {
+        opacity: 0.9;
+        box-shadow: 0 0 20px rgba(255, 51, 51, 0.9);
+      }
+    }
+
+    .summary.alert-state {
+      background: var(--card-bg);
+      border-color: var(--fire-red);
+      box-shadow: 0 4px 16px rgba(255, 51, 51, 0.4);
+    }
+
+    .summary.alert-state .title {
+      color: var(--fire-red);
+    }
+
+    /* Tooltip styles for better UX */
+    [title] {
+      cursor: help;
+    }
+
+    /* Improve text readability */
+    .card-sm .header i,
+    .summary .title i {
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+
+    .card-sm .header:hover i,
+    .summary:hover .title i {
+      opacity: 1;
+    }
+
+    /* Better focus states for accessibility */
+    *:focus-visible {
+      outline: 2px solid var(--accent-blue);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* Ensure all text is readable */
+    .system-info {
+      font-size: 12px;
+    }
+
+    .system-info div span:first-child {
+      color: var(--muted);
+    }
+
+    /* Chrome-specific scrollbar improvements */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* SMS toast */
+    .sms-toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: linear-gradient(180deg, rgba(20, 20, 20, 0.95), rgba(6, 6, 6, 0.95));
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      font-weight: 700;
+      display: none;
+      z-index: 99999;
+      max-width: 360px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .sms-toast.show {
+      display: block;
+      animation: slideUp .28s ease both;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(8px);
+        opacity: 0
+      }
+
+      to {
+        transform: none;
+        opacity: 1
+      }
+    }
+
+    /* small screens fallback */
+    @media (max-width:1200px) {
+      .right {
+        width: 340px;
+        min-width: 340px;
+        max-width: 340px;
+      }
+    }
+
+    @media (max-width:1000px) {
+      .right {
+        width: 300px;
+        min-width: 300px;
+        max-width: 300px;
+      }
+
+      :root {
+        --video-h: 360px;
+        --charts-h: 140px;
+      }
+
+      .header {
+        flex-wrap: wrap;
+        height: auto;
+        min-height: var(--header-h);
+      }
+
+      .header-center {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: 6px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 12px;
+      }
+
+      .app {
+        padding: 12px;
+        gap: 12px;
+      }
+
+      .main {
+        flex-direction: column;
+      }
+
+      .right {
+        width: 100%;
+        min-width: 100%;
+      }
+
+      .video-card {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <div class="logo"><i class="fas fa-fire"></i></div>
+        <div class="brand">
+          <h1>Fire Detection System</h1>
+          <p>Enterprise AI Monitoring Platform</p>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <div class="stat"><label>Uptime</label>
+          <div class="val" id="uptimeHeader">00:00:00</div>
+        </div>
+        <div class="stat"><label>FPS</label>
+          <div class="val" id="fpsHeader">0</div>
+        </div>
+        <div class="stat"><label>Status</label>
+          <div class="val active" id="statusText">Active</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:center">
+        <div class="status-chip" id="statusChip"><i class="fas fa-circle"></i><span>System Operational</span></div>
+
+        <!-- Manual alert button -->
+        <button id="sendAlertBtn" class="btn ghost" title="Send manual alert to emergency contacts">
+          <i class="fas fa-paper-plane"></i><span style="font-size:13px">Send Alert</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main area -->
+    <div class="main">
+      <!-- LEFT -->
+      <div class="left">
+        <div class="video-card">
+          <div class="video-header">
+            <h2><i class="fas fa-video" style="color:#00c4ff;margin-right:8px"></i> Live Camera Feed</h2>
+            <div class="video-tags">
+              <div class="tag live" title="Camera feed is active and streaming">LIVE</div>
+              <div class="tag" id="uptimeTag" title="Total system uptime">00:00:00</div>
+              <div class="tag" id="fpsTag" title="Current processing speed">0 FPS</div>
+              <button id="fullscreenBtn" class="btn ghost" title="Toggle full-screen"><i class="fas fa-expand"></i></button>
+            </div>
+          </div>
+
+          <div class="video-wrap">
+            <video id="video" autoplay playsinline muted></video>
+            <div class="live-pill"><span class="live-dot"></span> LIVE</div>
+            <div class="video-badges">
+              <div class="vb"><small style="color:var(--muted);display:block;font-size:10px">FPS</small><strong
+                  id="badgeFps">0</strong></div>
+              <div class="vb"><small style="color:var(--muted);display:block;font-size:10px">UPTIME</small><strong
+                  id="badgeUp">00:00:00</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="right">
+        <div class="right-scroll">
+          <div class="summary" id="summaryCard">
+            <div class="title" id="summaryTitle">
+              <i class="fas fa-check-circle" style="margin-right:8px;color:var(--safe-green)"></i>
+              All Systems Clear
+            </div>
+            <div class="subtitle" id="summarySubtitle">
+              No fire detected. Real‑time monitoring and SMS alert system are on standby.
+            </div>
+          </div>
+
+          <div class="card-sm" title="AI model's confidence in detecting fire">
+            <div class="header">AI Detection Confidence <i class="fas fa-wave-square" style="color:#a8b3c8"></i>
+            </div>
+            <div class="big-num safe" id="confidenceValue">0%</div>
+            <div class="progress">
+              <div class="fill" id="confidenceBar" style="width:0%"></div>
+            </div>
+            <div style="margin-top:10px;color:#a8b3c8;font-size:13px;font-weight:500">Real-time model confidence score
+            </div>
+          </div>
+
+          <div class="card-sm" title="Current fire detection status">
+            <div class="header">Fire Detection Status <i class="fas fa-fire-alt" style="color:#a8b3c8"></i></div>
+            <div class="big-num safe" id="fireStatusValue">SAFE</div>
+            <div class="status-grid">
+              <div><label>Detection Rate</label><strong id="detectionRate">0 fps</strong></div>
+              <div><label>Last Check</label><strong id="lastCheck">--:--:--</strong></div>
+            </div>
+          </div>
+
+          <!-- Contacts card -->
+          <div class="card-sm" title="Emergency contacts that receive SMS alerts when fire is detected">
+            <div class="header" style="display:flex;justify-content:space-between;align-items:center">
+              <span>Emergency Contacts</span>
+              <small style="color:var(--muted);font-weight:700">
+                Auto-SMS on confirmed fire detection
+              </small>
+            </div>
+
+            <div class="contacts-list" id="contactsList">
+              <div class="contact">
+                <div class="meta">
+                  <div class="name">Hemant Mohane</div>
+                  <div class="phone">+91 79749 42457</div>
+                </div>
+                <div>
+                  <a href="tel:+917974942457" title="Call Hemant">
+                    <i class="fas fa-phone"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="contact">
+                <div class="meta">
+                  <div class="name">zayed</div>
+                  <div class="phone">+91 82523 55135</div>
+                </div>
+                <div>
+                  <a href="tel:+918252355135" title="Call zayed">
+                    <i class="fas fa-phone"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="contact">
+                <div class="meta">
+                  <div class="name">Rudrashak</div>
+                  <div class="phone">+91 91318 49771</div>
+                </div>
+                <div>
+                  <a href="tel:+919131849771" title="Call Rudrashak">
+                    <i class="fas fa-phone"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="contact">
+                <div class="meta">
+                  <div class="name">abhishek</div>
+                  <div class="phone">+91 93025 96728</div>
+                </div>
+                <div>
+                  <a href="tel:+919302596728" title="Call abhishek">
+                    <i class="fas fa-phone"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-sm">
+            <div class="header">System Performance <i class="fas fa-gauge-high" style="color:var(--muted)"></i></div>
+            <div class="big-num safe" id="systemPerformanceValue">100%</div>
+            <div style="margin-top:8px;color:var(--muted);font-size:12px">System health and responsiveness</div>
+          </div>
+
+          <div class="card-sm">
+            <div class="header">System Information</div>
+            <div class="system-info">
+              <div><span>Backend</span><span>Django 5.2.5</span></div>
+              <div><span>AI Model</span><span>YOLOv8</span></div>
+              <div><span>Processing</span><span>OpenCV</span></div>
+              <div><span>Status</span><span id="systemInfoStatus">Online</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div>&copy; <span id="currentYear"></span> Fire Detection System</div>
+      <div id="currentTime"></div>
+    </div>
+  </div>
+
+  <!-- SMS toast -->
+  <div id="smsToast" class="sms-toast">Alert SMS sent to emergency contacts</div>
+
+  <!-- placeholder alarm -->
+  <audio id="alarmSound" src="/static/alarm.mp3" preload="auto"></audio>
+
+  <script>
+    // DOM refs
+    const videoEl = document.getElementById('video');
+    const alarm = document.getElementById('alarmSound');
+
+    const uptimeHeader = document.getElementById('uptimeHeader');
+    const fpsHeader = document.getElementById('fpsHeader');
+    const uptimeTag = document.getElementById('uptimeTag');
+    const fpsTag = document.getElementById('fpsTag');
+    const badgeFps = document.getElementById('badgeFps');
+    const badgeUp = document.getElementById('badgeUp');
+
+    const confidenceValue = document.getElementById('confidenceValue');
+    const confidenceBar = document.getElementById('confidenceBar');
+    const fireStatusValue = document.getElementById('fireStatusValue');
+    const detectionRateEl = document.getElementById('detectionRate');
+    const lastCheckEl = document.getElementById('lastCheck');
+    const summaryCard = document.getElementById('summaryCard');
+    const summaryTitle = document.getElementById('summaryTitle');
+    const summarySubtitle = document.getElementById('summarySubtitle');
+    const statusChip = document.getElementById('statusChip');
+    const systemInfoStatus = document.getElementById('systemInfoStatus');
+    const systemPerformanceValue = document.getElementById('systemPerformanceValue');
+
+    // New refs
+    const sendAlertBtn = document.getElementById('sendAlertBtn');
+    const smsToast = document.getElementById('smsToast');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+
+
+    // show SMS toast (bilingual default)
+    function showSmsToast(text = 'Alert SMS sent to emergency contacts / अलर्ट SMS emergency contacts को भेजा गया') {
+      if (!smsToast) return;
+      smsToast.textContent = text;
+      smsToast.classList.add('show');
+      setTimeout(() => smsToast.classList.remove('show'), 8000);
+    }
+
+    // Initialize charts
+    function initCharts() {
+      // Initialize confidence history with zeros
+      for (let i = 0; i < maxHistoryLength; i++) {
+        confidenceHistory.push(0);
+      }
+
+      // Initialize detection history with zeros
+      for (let i = 0; i < 20; i++) {
+        detectionHistory.push(0);
+        const bar = document.createElement('div');
+        bar.className = 'detection-bar';
+        bar.style.height = '0%';
+        detectionBarsContainer.appendChild(bar);
+      }
+
+      drawConfidenceChart();
+    }
+
+    // Draw confidence trend chart
+    function drawConfidenceChart() {
+      if (!confidenceChartCanvas) return;
+
+      const ctx = confidenceChartCanvas.getContext('2d');
+      const container = confidenceChartCanvas.parentElement;
+      const rect = container.getBoundingClientRect();
+      const width = rect.width - 38; // Account for y-axis
+      const height = rect.height - 28; // Account for x-axis
+
+      // Set canvas size (important for high DPI displays)
+      const dpr = window.devicePixelRatio || 1;
+      confidenceChartCanvas.width = width * dpr;
+      confidenceChartCanvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+
+      // Clear canvas
+      ctx.clearRect(0, 0, width, height);
+
+      if (confidenceHistory.length < 2) return;
+
+      // Draw grid lines
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = (height / 4) * i;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      // Draw confidence line
+      ctx.strokeStyle = '#0066ff';
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+
+      const stepX = width / Math.max(1, confidenceHistory.length - 1);
+
+      confidenceHistory.forEach((value, index) => {
+        const x = index * stepX;
+        const y = height - (value / 100) * height;
+
+        if (index === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+
+      ctx.stroke();
+
+      // Draw gradient fill under line
+      const lastValue = confidenceHistory[confidenceHistory.length - 1];
+      const lastX = (confidenceHistory.length - 1) * stepX;
+      const lastY = height - (lastValue / 100) * height;
+
+      ctx.beginPath();
+      ctx.moveTo(0, height);
+      confidenceHistory.forEach((value, index) => {
+        const x = index * stepX;
+        const y = height - (value / 100) * height;
+        ctx.lineTo(x, y);
+      });
+      ctx.lineTo(lastX, height);
+      ctx.closePath();
+
+      const gradient = ctx.createLinearGradient(0, 0, 0, height);
+      gradient.addColorStop(0, 'rgba(0, 102, 255, 0.2)');
+      gradient.addColorStop(1, 'rgba(0, 102, 255, 0.01)');
+      ctx.fillStyle = gradient;
+      ctx.fill();
+    }
+
+    // Update detection history bars
+    function updateDetectionBars() {
+      const bars = detectionBarsContainer.querySelectorAll('.detection-bar');
+      bars.forEach((bar, index) => {
+        const value = detectionHistory[index] || 0;
+        bar.style.height = `${value * 100}%`;
+      });
+    }
+
+    // Add new data point to charts
+    function addChartData(confidence, hasFire) {
+      // Add to confidence history
+      confidenceHistory.push(Math.min(100, Math.max(0, confidence)));
+      if (confidenceHistory.length > maxHistoryLength) {
+        confidenceHistory.shift();
+      }
+
+      // Add to detection history (1 if fire detected, 0 otherwise)
+      detectionHistory.push(hasFire ? 1 : 0);
+      if (detectionHistory.length > 20) {
+        detectionHistory.shift();
+      }
+
+      // Update charts
+      drawConfidenceChart();
+      updateDetectionBars();
+    }
+
+
+
+    // start camera
+    navigator.mediaDevices?.getUserMedia({ video: { width: 1920, height: 1080 } })
+      .then(stream => { videoEl.srcObject = stream; videoEl.play().catch(() => { }); })
+      .catch(err => {
+        console.error('Camera error', err);
+        const wrap = document.querySelector('.video-wrap');
+        wrap.innerHTML = '<div style="padding:50px 30px;text-align:center;color:var(--fire-red);display:flex;flex-direction:column;align-items:center;gap:16px;height:100%;justify-content:center"><i class="fas fa-exclamation-triangle" style="font-size:48px;margin-bottom:8px;opacity:0.9"></i><div style="font-size:15px;font-weight:600;line-height:1.6">Camera access denied</div><div style="font-size:13px;color:var(--muted);max-width:300px">Please allow camera permissions in your browser settings to enable live monitoring.</div></div>';
+      });
+
+    // time and uptime
+    const startTime = Date.now();
+    function updateClock() { const now = new Date(); document.getElementById('currentTime').textContent = now.toLocaleString(); document.getElementById('currentYear').textContent = now.getFullYear(); }
+    function updateUptime() { const elapsed = Math.floor((Date.now() - startTime) / 1000); const h = Math.floor(elapsed / 3600).toString().padStart(2, '0'); const m = Math.floor((elapsed % 3600) / 60).toString().padStart(2, '0'); const s = (elapsed % 60).toString().padStart(2, '0'); const text = `${h}:${m}:${s}`; uptimeHeader.textContent = text; uptimeTag.textContent = text; badgeUp.textContent = text; }
+    updateClock(); updateUptime(); setInterval(updateClock, 1000); setInterval(updateUptime, 1000);
+
+    // detection loop
+    let frameCount = 0;
+    const detectStart = Date.now();
+
+    async function sendFrame() {
+      if (!videoEl || !videoEl.videoWidth) return;
+      const canvas = document.createElement('canvas');
+      canvas.width = videoEl.videoWidth; canvas.height = videoEl.videoHeight;
+      canvas.getContext('2d').drawImage(videoEl, 0, 0, canvas.width, canvas.height);
+      const base64 = canvas.toDataURL('image/jpeg', 0.8);
+
+      try {
+        const res = await fetch('/detect/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ frame: base64 }) });
+        const data = await res.json();
+
+        // Check if we're in demo mode
+        if (data?.demo_mode) {
+          // Show demo mode notification
+          if (!document.getElementById('demoNotification')) {
+            const demoDiv = document.createElement('div');
+            demoDiv.id = 'demoNotification';
+            demoDiv.style.cssText = `
+              position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+              background: linear-gradient(135deg, #ff8800, #ff6600);
+              color: white; padding: 12px 20px; border-radius: 8px;
+              font-weight: 700; font-size: 14px; z-index: 10000;
+              box-shadow: 0 4px 12px rgba(255, 136, 0, 0.4);
+              border: 1px solid rgba(255, 255, 255, 0.2);
+            `;
+            demoDiv.innerHTML = '<i class="fas fa-info-circle" style="margin-right: 8px;"></i>Demo Mode - YOLO not available on free tier';
+            document.body.appendChild(demoDiv);
+          }
+        }
+
+        // show toast when backend reports SMS sent
+        if (data?.sms_sent) {
+          showSmsToast('Automatic fire alert SMS sent to emergency contacts / ऑटोमेटिक आग का अलर्ट SMS emergency contacts को भेजा गया');
+        }
+
+        frameCount++;
+        const elapsedSec = Math.max(1, (Date.now() - detectStart) / 1000);
+        const fps = Math.max(1, Math.round(frameCount / elapsedSec));
+        fpsHeader.textContent = fps; fpsTag.textContent = `${fps} FPS`; badgeFps.textContent = fps; detectionRateEl.textContent = `${fps} fps`; lastCheckEl.textContent = new Date().toLocaleTimeString();
+
+        const confidence = Number(data?.conf ?? 0);
+        const hasFire = data?.fire === 1 || confidence >= 70;
+
+
+
+        confidenceValue.textContent = `${confidence}%`;
+        confidenceBar.style.width = `${Math.min(100, Math.max(0, confidence))}%`;
+
+        confidenceValue.classList.remove('safe', 'alert');
+        if (confidence < 35) {
+          confidenceValue.classList.add('safe');
+          confidenceValue.style.color = 'var(--safe-green)';
+          confidenceBar.style.background = 'linear-gradient(90deg, var(--safe-green), var(--safe-green))';
+        } else if (confidence < 70) {
+          confidenceValue.style.color = 'var(--warning-orange)';
+          confidenceBar.style.background = 'linear-gradient(90deg, var(--safe-green), var(--warning-orange))';
+        } else {
+          confidenceValue.classList.add('alert');
+          confidenceValue.style.color = 'var(--fire-red)';
+          confidenceBar.style.background = 'linear-gradient(90deg, var(--safe-green), var(--warning-orange), var(--fire-red))';
+        }
+
+        if (hasFire) {
+          alarm.loop = true;
+          if (alarm.paused) alarm.play().catch(() => { });
+
+          // Update summary card with alert state
+          summaryCard.classList.add('alert-state');
+          summaryTitle.innerHTML = "<i class='fas fa-exclamation-triangle' style='margin-right:8px;color:var(--fire-red)'></i>Fire Detected!";
+          summarySubtitle.textContent = `Confidence ${confidence}% – Immediate action required. / तुरंत एक्शन ज़रूरी है।`;
+
+          // Update status chip
+          statusChip.className = 'status-chip alert';
+          statusChip.innerHTML = "<i class='fas fa-circle'></i><span>Fire Alert</span>";
+
+          // Update fire status
+          fireStatusValue.textContent = 'ALERT';
+          fireStatusValue.className = 'big-num alert';
+
+          // Update system info
+          systemInfoStatus.textContent = 'Emergency';
+          systemInfoStatus.style.color = 'var(--fire-red)';
+          systemPerformanceValue.textContent = '78%';
+          systemPerformanceValue.className = 'big-num alert';
+        } else {
+          if (!alarm.paused) { alarm.pause(); alarm.currentTime = 0; }
+
+          // Remove alert state from summary
+          summaryCard.classList.remove('alert-state');
+          summaryTitle.innerHTML = "<i class='fas fa-check-circle' style='margin-right:8px;color:var(--safe-green)'></i>All Systems Clear";
+          summarySubtitle.textContent = 'No fire detected. Monitoring active. / कोई आग नहीं, मॉनिटरिंग चालू है।';
+
+          // Reset status chip
+          statusChip.className = 'status-chip';
+          statusChip.innerHTML = "<i class='fas fa-circle'></i><span>System Operational</span>";
+
+          // Reset fire status
+          fireStatusValue.textContent = 'SAFE';
+          fireStatusValue.className = 'big-num safe';
+
+          // Reset system info
+          systemInfoStatus.textContent = 'Online';
+          systemInfoStatus.style.color = '';
+          systemPerformanceValue.textContent = '100%';
+          systemPerformanceValue.className = 'big-num safe';
+        }
+
+      } catch (e) {
+        console.error('detect error', e);
+      }
+    }
+
+    setInterval(sendFrame, 800);
+
+    // Manual alert button handler — calls backend endpoint /send_alert/ (POST)
+    sendAlertBtn?.addEventListener('click', async () => {
+      try {
+        sendAlertBtn.disabled = true;
+        sendAlertBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i><span> Sending...</span>';
+        const res = await fetch('/send_alert/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: 'Manual alert triggered from UI / UI से मैन्युअल आग का अलर्ट' })
+        });
+        const j = await res.json();
+        if (j?.sms_sent) {
+          showSmsToast('Manual alert sent to emergency contacts / मैन्युअल अलर्ट emergency contacts को भेजा गया');
+        } else if (j?.error) {
+          showSmsToast('Failed to send manual alert: ' + j.error + ' / मैन्युअल अलर्ट भेजने में समस्या');
+        } else {
+          showSmsToast('Manual alert request completed / मैन्युअल अलर्ट रिक्वेस्ट पूरी हुई');
+        }
+      } catch (err) {
+        console.error('send alert error', err);
+        showSmsToast('Error sending manual alert / मैन्युअल अलर्ट भेजने में error');
+      } finally {
+        sendAlertBtn.disabled = false;
+        sendAlertBtn.innerHTML = '<i class="fas fa-paper-plane"></i><span style="font-size:13px">Send Alert</span>';
+      }
+    });
+
+    // Full-screen toggle handler
+    fullscreenBtn?.addEventListener('click', () => {
+      const videoWrap = document.querySelector('.video-wrap');
+      if (!videoWrap) return;
+
+      if (!document.fullscreenElement) {
+        // Enter full-screen
+        videoWrap.requestFullscreen().then(() => {
+          fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+          fullscreenBtn.title = 'Exit full-screen';
+        }).catch(err => {
+          console.error('Error entering full-screen:', err);
+        });
+      } else {
+        // Exit full-screen
+        document.exitFullscreen().then(() => {
+          fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+          fullscreenBtn.title = 'Toggle full-screen';
+        }).catch(err => {
+          console.error('Error exiting full-screen:', err);
+        });
+      }
+    });
+
+    // Update full-screen button icon when full-screen state changes
+    document.addEventListener('fullscreenchange', () => {
+      if (document.fullscreenElement) {
+        fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+        fullscreenBtn.title = 'Exit full-screen';
+      } else {
+        fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+        fullscreenBtn.title = 'Toggle full-screen';
+      }
+    });
+  </script>
+</body>
+
+</html>
