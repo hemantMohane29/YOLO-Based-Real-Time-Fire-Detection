@@ -1,0 +1,21 @@
+# Requirements for building executable
+# Install these before running build_exe.py
+
+pyinstaller>=5.0
+django==5.2.9
+opencv-python-headless
+numpy
+pillow
+python-dotenv
+psutil
+twilio
+
+# Optional AI dependencies (for full functionality)
+ultralytics
+torch
+torchvision
+torchaudio
+
+# Additional build dependencies
+setuptools
+wheel
