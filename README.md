@@ -312,4 +312,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **⚠️ Important**: This system is designed to assist in fire detection but should not be the sole fire safety measure. Always maintain proper fire safety equipment and procedures.
 
-**Made with ❤️ by [Hemant Mohane](https://github.com/hemantMohane29)**
+**Made with by [Hemant Mohane](https://github.com/hemantMohane29)**
