@@ -3,7 +3,7 @@ services:
     name: fire-detector
     env: python
     buildCommand: "./build.sh"
-    startCommand: "cd Fire_detector && gunicorn Fire_detector.wsgi:application"
+    startCommand: "cd Fire_detector && gunicorn Fire_detector.wsgi:application --workers=1 --threads=2 --timeout=120 --max-requests=100 --max-requests-jitter=10"
     plan: free
     envVars:
       - key: SECRET_KEY

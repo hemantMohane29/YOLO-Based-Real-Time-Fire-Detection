@@ -17,6 +17,10 @@ from pathlib import Path
 # Load environment variables from .env file
 load_dotenv()
 
+# PyTorch optimizations for low memory
+os.environ['TORCH_HOME'] = '/tmp/torch'
+os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'max_split_size_mb:128'
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

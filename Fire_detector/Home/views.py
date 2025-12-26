@@ -32,18 +32,29 @@ except Exception:
 # ================= BASE DIR =================
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ================= LOAD YOLO MODEL =================
+# ================= MODEL PATH =================
 MODEL_PATH = BASE_DIR / "ML_Model" / "fire_model.pt"
 
-model = None
-if YOLO is not None:
-    try:
-        model = YOLO(str(MODEL_PATH))
-        logger.info("YOLO model loaded successfully from %s", MODEL_PATH)
-    except Exception as e:
-        logger.exception("Failed to load YOLO model: %s", e)
-else:
-    logger.warning("YOLO not installed. Detection disabled.")
+# Global model cache - will be loaded on first use
+_model_cache = None
+
+def get_model():
+    """Load model on demand to save memory"""
+    global _model_cache
+    
+    if _model_cache is None:
+        if YOLO is None:
+            logger.warning("YOLO not installed. Detection disabled.")
+            return None
+            
+        try:
+            _model_cache = YOLO(str(MODEL_PATH))
+            logger.info("YOLO model loaded successfully from %s", MODEL_PATH)
+        except Exception as e:
+            logger.exception("Failed to load YOLO model: %s", e)
+            return None
+    
+    return _model_cache
 
 # ================= STABILITY BUFFER =================
 fire_buffer = []
@@ -122,8 +133,10 @@ def detect(request):
     if request.method != "POST":
         return JsonResponse({"error": "POST method required"}, status=405)
 
+    # Load model on demand
+    model = get_model()
     if model is None:
-        return JsonResponse({"error": "YOLO model not loaded"}, status=500)
+        return JsonResponse({"error": "YOLO model not available"}, status=500)
 
     try:
         body = json.loads(request.body.decode("utf-8"))
@@ -143,8 +156,16 @@ def detect(request):
         if frame is None:
             return JsonResponse({"error": "Invalid image"}, status=400)
 
+        # Resize frame to reduce memory usage
+        height, width = frame.shape[:2]
+        if width > 640:
+            scale = 640 / width
+            new_width = 640
+            new_height = int(height * scale)
+            frame = cv2.resize(frame, (new_width, new_height))
+
         # -------- YOLO Prediction --------
-        results = model.predict(frame, conf=0.35, imgsz=640)
+        results = model.predict(frame, conf=0.35, imgsz=640, verbose=False)
 
         fire_detected = 0
         best_conf = 0.0
