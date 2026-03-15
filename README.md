@@ -1,315 +1,234 @@
 # 🔥 YOLO-Based Real-Time Fire Detection System
 
-A professional-grade fire detection system powered by YOLOv8 AI model with real-time monitoring, SMS alerts, and web-based dashboard. Built with Django and optimized for cloud deployment.
+A real-time fire detection web application powered by **YOLOv8** and **Django**, with automatic **SMS/WhatsApp alerts** via Twilio.
 
-![Fire Detection Demo](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)
-![Python](https://img.shields.io/badge/Python-3.8+-blue)
-![Django](https://img.shields.io/badge/Django-5.2+-green)
+![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)
+![Django](https://img.shields.io/badge/Django-5.2-green?logo=django)
 ![YOLOv8](https://img.shields.io/badge/YOLOv8-Ultralytics-orange)
-
-## ✨ Features
-
-### 🎯 Core Capabilities
-- **Real-time Fire Detection** - YOLOv8-powered AI model with 90%+ accuracy
-- **Live Camera Feed** - WebRTC-based video streaming with low latency
-- **Smart Alerts** - Automatic SMS/WhatsApp notifications via Twilio
-- **Professional Dashboard** - Modern web interface with real-time metrics
-- **Multi-language Support** - English and Hindi alert messages
-
-### 🛡️ Safety Features
-- **Stability Buffer** - Prevents false alarms with confidence-based filtering
-- **Emergency Contacts** - Automated alerts to multiple contacts
-- **Manual Alert System** - One-click emergency notifications
-- **System Monitoring** - Real-time performance and health metrics
-
-### 🚀 Technical Features
-- **Cloud-Ready** - Optimized for Render, Heroku, and other platforms
-- **Memory Efficient** - Adaptive loading based on available resources
-- **Demo Mode** - Fallback operation for resource-constrained environments
-- **Responsive Design** - Works on desktop, tablet, and mobile devices
-
-## 🏗️ Architecture
-
-```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Web Browser   │◄──►│   Django Server  │◄──►│   YOLO Model    │
-│                 │    │                  │    │                 │
-│ • Live Video    │    │ • Fire Detection │    │ • AI Inference  │
-│ • Dashboard     │    │ • SMS Alerts     │    │ • Confidence    │
-│ • Controls      │    │ • API Endpoints  │    │ • Bounding Box  │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-                                │
-                                ▼
-                       ┌──────────────────┐
-                       │   Twilio API     │
-                       │                  │
-                       │ • SMS Delivery   │
-                       │ • WhatsApp       │
-                       │ • Multi-contact  │
-                       └──────────────────┘
-```
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Python 3.8+
-- Webcam/Camera access
-- Twilio account (optional, for SMS alerts)
-
-### Local Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/hemantMohane29/YOLO-Based-Real-Time-Fire-Detection.git
-   cd YOLO-Based-Real-Time-Fire-Detection/Fire_detector
-   ```
-
-2. **Create virtual environment**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. **Install dependencies**
-   ```bash
-   # For full AI capabilities (requires 2GB+ RAM)
-   pip install -r requirements-full.txt
-   
-   # For demo mode (lightweight)
-   pip install -r requirements.txt
-   ```
-
-4. **Configure environment variables**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your Twilio credentials (optional)
-   ```
-
-5. **Run the application**
-   ```bash
-   cd Fire_detector
-   python manage.py migrate
-   python manage.py runserver
-   ```
-
-6. **Access the dashboard**
-   Open http://localhost:8000 in your browser
-
-## 🌐 Cloud Deployment
-
-### Deploy to Render (Recommended)
-
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com)
-
-1. **Fork this repository** to your GitHub account
-
-2. **Connect to Render**
-   - Go to [render.com](https://render.com)
-   - Click "New +" → "Web Service"
-   - Connect your GitHub repository
-
-3. **Configure deployment**
-   ```yaml
-   Name: fire-detector
-   Environment: Python 3
-   Build Command: ./build.sh
-   Start Command: cd Fire_detector && gunicorn Fire_detector.wsgi:application
-   ```
-
-4. **Set environment variables**
-   - `SECRET_KEY`: Auto-generate
-   - `DEBUG`: `false`
-   - `TWILIO_ACCOUNT_SID`: Your Twilio SID (optional)
-   - `TWILIO_AUTH_TOKEN`: Your Twilio token (optional)
-
-5. **Deploy**
-   - Click "Create Web Service"
-   - Your app will be live at `https://your-app-name.onrender.com`
-
-### Other Platforms
-- **Heroku**: Use `requirements-full.txt` and set `DISABLE_COLLECTSTATIC=1`
-- **Railway**: Works out of the box with `render.yaml`
-- **DigitalOcean**: Use Docker deployment with provided Dockerfile
-
-## 📱 Usage
-
-### Dashboard Overview
-- **Live Feed**: Real-time camera stream with fire detection overlay
-- **Detection Status**: Current fire detection confidence and status
-- **System Metrics**: FPS, uptime, and performance indicators
-- **Emergency Contacts**: Quick access to call emergency contacts
-- **Manual Alerts**: Send immediate alerts to all contacts
-
-### Fire Detection Process
-1. **Camera Capture**: Continuous video stream processing
-2. **AI Analysis**: YOLOv8 model analyzes each frame
-3. **Confidence Scoring**: Assigns confidence percentage to detections
-4. **Stability Check**: Filters false positives with buffer system
-5. **Alert Trigger**: Sends SMS/WhatsApp when fire confirmed
-6. **Dashboard Update**: Real-time UI updates with detection status
-
-### SMS Alert System
-- **Automatic Alerts**: Triggered when fire confidence > 50% for 6+ consecutive frames
-- **Manual Alerts**: One-click emergency notifications
-- **Multi-language**: English and Hindi message support
-- **Cooldown Period**: 5-minute cooldown prevents spam
-- **Multiple Contacts**: Alerts sent to all configured contacts
-
-## ⚙️ Configuration
-
-### Environment Variables
-
-| Variable | Description | Required | Default |
-|----------|-------------|----------|---------|
-| `SECRET_KEY` | Django secret key | Yes | Auto-generated |
-| `DEBUG` | Debug mode | No | `false` |
-| `TWILIO_ACCOUNT_SID` | Twilio Account SID | No | - |
-| `TWILIO_AUTH_TOKEN` | Twilio Auth Token | No | - |
-| `TWILIO_WHATSAPP_FROM` | WhatsApp sender number | No | - |
-| `TWILIO_PHONE_NUMBER` | SMS sender number | No | - |
-
-### Model Configuration
-```python
-# Fire_detector/Home/views.py
-CONF_THRESHOLD = 0.50  # Detection confidence threshold
-ALERT_COOLDOWN = 300   # Seconds between alerts
-STABILITY_BUFFER = 6   # Frames required for stable detection
-```
-
-### Contact Configuration
-```python
-# Fire_detector/Home/views.py
-CONTACTS = [
-    ("Name", "+1234567890"),
-    # Add more contacts here
-]
-```
-
-## 🧪 Testing
-
-### Run Tests
-```bash
-python manage.py test
-```
-
-### Manual Testing
-1. **Camera Test**: Verify video feed appears
-2. **Detection Test**: Use fire images/videos to test detection
-3. **Alert Test**: Use manual alert button to test SMS delivery
-4. **Performance Test**: Monitor FPS and memory usage
-
-### Demo Mode Testing
-- Demo mode activates automatically on low-memory systems
-- Simulates fire detection with random confidence scores
-- All UI features remain functional
-- Orange notification banner indicates demo mode
-
-## 🔧 Troubleshooting
-
-### Common Issues
-
-**Camera not working**
-```bash
-# Check camera permissions in browser
-# Ensure HTTPS for production (required for camera access)
-```
-
-**Memory issues on deployment**
-```bash
-# Use requirements.txt instead of requirements-full.txt
-# App will run in demo mode automatically
-```
-
-**SMS not sending**
-```bash
-# Verify Twilio credentials in environment variables
-# Check Twilio account balance and phone number verification
-```
-
-**Low FPS performance**
-```bash
-# Reduce image resolution in views.py
-# Increase detection interval (currently 800ms)
-```
-
-### Performance Optimization
-
-**For Production**
-- Use `requirements-full.txt` with adequate RAM (2GB+)
-- Enable GPU acceleration if available
-- Optimize image resolution based on requirements
-- Use CDN for static files
-
-**For Development**
-- Use `requirements.txt` for lightweight testing
-- Demo mode provides full UI testing without ML overhead
-
-## 📊 System Requirements
-
-### Minimum Requirements (Demo Mode)
-- **RAM**: 512MB
-- **CPU**: 1 core
-- **Storage**: 1GB
-- **Network**: Broadband internet
-
-### Recommended Requirements (Full AI)
-- **RAM**: 2GB+
-- **CPU**: 2+ cores
-- **Storage**: 2GB
-- **GPU**: Optional (CUDA-compatible for acceleration)
-
-### Browser Support
-- Chrome 80+ (recommended)
-- Firefox 75+
-- Safari 13+
-- Edge 80+
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-### Development Setup
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make your changes and test thoroughly
-4. Submit a pull request with detailed description
-
-### Code Style
-- Follow PEP 8 for Python code
-- Use meaningful variable names
-- Add comments for complex logic
-- Include docstrings for functions
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Ultralytics** - YOLOv8 model and framework
-- **OpenCV** - Computer vision processing
-- **Twilio** - SMS and WhatsApp API services
-- **Django** - Web framework
-- **Render** - Cloud deployment platform
-
-## 📞 Support
-
-- **Issues**: [GitHub Issues](https://github.com/hemantMohane29/YOLO-Based-Real-Time-Fire-Detection/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/hemantMohane29/YOLO-Based-Real-Time-Fire-Detection/discussions)
-- **Email**: [Your Email]
-
-## 🔮 Roadmap
-
-- [ ] Mobile app development
-- [ ] Multi-camera support
-- [ ] Cloud storage integration
-- [ ] Advanced analytics dashboard
-- [ ] Integration with fire department systems
-- [ ] IoT sensor integration
-- [ ] Machine learning model improvements
+![OpenCV](https://img.shields.io/badge/OpenCV-4.8+-red?logo=opencv)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
 ---
 
-**⚠️ Important**: This system is designed to assist in fire detection but should not be the sole fire safety measure. Always maintain proper fire safety equipment and procedures.
+## 📸 Demo
 
-**Made with ❤️ by [Hemant Mohane](https://github.com/hemantMohane29)**
+> Live camera feed → AI detects fire → Sends SMS/WhatsApp alert automatically
+
+---
+
+## ✨ Features
+
+- 🎯 Real-time fire detection using YOLOv8 custom trained model
+- 📹 Live webcam feed via browser (WebRTC)
+- 🚨 Automatic SMS & WhatsApp alerts via Twilio
+- 📊 Professional dashboard with confidence metrics
+- 🔇 Audio alarm on fire detection
+- 🌐 Works in browser — no app install needed
+- ⚡ Demo mode when AI libraries are unavailable
+- 🐳 Docker ready for cloud deployment
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Backend | Django 5.2 |
+| AI Model | YOLOv8 (Ultralytics) |
+| Computer Vision | OpenCV |
+| Alerts | Twilio SMS / WhatsApp |
+| Frontend | HTML, CSS, JavaScript (WebRTC) |
+| Deployment | Docker, Railway, Gunicorn |
+
+---
+
+## 🚀 Quick Start (Local)
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/hemantMohane29/YOLO-Based-Real-Time-Fire-Detection.git
+cd YOLO-Based-Real-Time-Fire-Detection
+```
+
+### 2. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Configure environment
+
+Edit `Fire_detector/.env`:
+
+```env
+DEBUG=True
+SECRET_KEY=django-insecure-dev-key-only-for-development
+ALLOWED_HOSTS=localhost,127.0.0.1
+
+# Optional - for SMS alerts
+TWILIO_ACCOUNT_SID=your_account_sid
+TWILIO_AUTH_TOKEN=your_auth_token
+TWILIO_PHONE_NUMBER=+1234567890
+TWILIO_WHATSAPP_FROM=whatsapp:+14155238886
+```
+
+### 4. Run the server
+
+```bash
+cd Fire_detector/Fire_detector
+python manage.py migrate
+python manage.py runserver
+```
+
+### 5. Open in browser
+
+```
+http://127.0.0.1:8000
+```
+
+---
+
+## 📁 Project Structure
+
+```
+YOLO-Based-Real-Time-Fire-Detection/
+├── Dockerfile                        # Docker config for deployment
+├── requirements.txt                  # Python dependencies
+├── Fire_detector/
+│   ├── .env                          # Environment variables
+│   ├── Fire_detector/                # Django project
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── Home/                         # Main app
+│   │   ├── views.py                  # Fire detection logic
+│   │   ├── urls.py
+│   │   └── templates/Home/home.html  # Frontend UI
+│   ├── ML_Model/
+│   │   └── fire_model.pt             # YOLOv8 trained model
+│   └── static/
+│       ├── alarm.mp3                 # Alert sound
+│       └── fire_bg.jpg               # Background image
+```
+
+---
+
+## 🐳 Deploy with Docker
+
+```bash
+# Build image
+docker build -t fire-detector .
+
+# Run container
+docker run -p 8000:8000 fire-detector
+```
+
+---
+
+## 🚂 Deploy to Railway
+
+1. Push code to GitHub
+2. Go to [railway.app](https://railway.app)
+3. Click **New Project → Deploy from GitHub**
+4. Select this repository
+5. Add environment variables:
+
+```
+DJANGO_SETTINGS_MODULE=Fire_detector.settings
+DEBUG=False
+SECRET_KEY=your-secret-key
+ALLOWED_HOSTS=*.railway.app,*.up.railway.app
+```
+
+6. Click **Deploy** — Railway auto-detects the Dockerfile
+
+---
+
+## 📱 SMS / WhatsApp Alerts Setup
+
+1. Create a [Twilio account](https://www.twilio.com)
+2. Get your Account SID and Auth Token
+3. Add to `.env` file:
+
+```env
+TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_AUTH_TOKEN=your_auth_token
+TWILIO_PHONE_NUMBER=+1234567890
+TWILIO_WHATSAPP_FROM=whatsapp:+14155238886
+```
+
+Alerts are sent automatically when fire is detected with >50% confidence for 6+ consecutive frames.
+
+---
+
+## ⚙️ Configuration
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DEBUG` | `True` | Django debug mode |
+| `SECRET_KEY` | dev key | Django secret key |
+| `ALLOWED_HOSTS` | `localhost,127.0.0.1` | Allowed hosts |
+| `TWILIO_ACCOUNT_SID` | - | Twilio account SID |
+| `TWILIO_AUTH_TOKEN` | - | Twilio auth token |
+| `TWILIO_PHONE_NUMBER` | - | Twilio phone number |
+
+---
+
+## 🧠 How It Works
+
+```
+Browser Camera → Base64 Frame → Django /detect/ endpoint
+       → OpenCV decode → YOLOv8 inference
+       → Stability filter (6/10 frames)
+       → Fire confirmed → Twilio SMS alert
+       → JSON response → Frontend UI update
+```
+
+1. Browser captures webcam frames every second
+2. Frames are sent as base64 to the `/detect/` API
+3. YOLOv8 model runs inference on each frame
+4. A stability buffer (6 out of 10 frames) prevents false alarms
+5. On confirmed fire, Twilio sends SMS/WhatsApp to emergency contacts
+6. Alert cooldown of 5 minutes prevents spam
+
+---
+
+## 🔧 Requirements
+
+```
+Django>=5.2.0
+ultralytics>=8.0.0
+torch>=2.0.0
+torchvision>=0.15.0
+opencv-python-headless>=4.8.0
+numpy>=1.24.0
+Pillow>=10.0.0
+twilio>=8.0.0
+gunicorn>=21.0.0
+python-dotenv>=1.0.0
+psutil>=5.9.0
+```
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome. For major changes, please open an issue first.
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](Fire_detector/LICENSE).
+
+---
+
+## 👨‍💻 Author
+
+**Hemant Mohane**
+- GitHub: [@hemantMohane29](https://github.com/hemantMohane29)
+
+---
+
+> ⚠️ This system is designed to assist in fire detection but should not be the sole fire safety measure. Always maintain proper fire safety equipment and procedures.

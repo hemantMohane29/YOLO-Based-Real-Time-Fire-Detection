@@ -5,11 +5,8 @@ set -o errexit
 # Install dependencies
 pip install -r requirements.txt
 
-# Navigate to the Django project directory
-cd Fire_detector
-
 # Collect static files
-python manage.py collectstatic --no-input
+python Fire_detector/manage.py collectstatic --no-input
 
 # Run migrations
-python manage.py migrate
+python Fire_detector/manage.py migrate
