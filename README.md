@@ -227,7 +227,7 @@ This project is licensed under the [MIT License](Fire_detector/LICENSE).
 ## 👨‍💻 Author
 
 **Hemant Mohane**
-- GitHub: [@hemantMohane29](https://github.com/hemantMohane29)
+- GitHub: [@hemantMohane29](https://github.com/hemantMohane29) 🩷
 
 ---
 
