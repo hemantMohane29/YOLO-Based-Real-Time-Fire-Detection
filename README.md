@@ -227,7 +227,5 @@ This project is licensed under the [MIT License](Fire_detector/LICENSE).
 
 **Hemant Mohane**
 - GitHub: [@hemantMohane29](https://github.com/hemantMohane29) 🩷
-
 ---
-
 > ⚠️ This system is designed to assist in fire detection but should not be the sole fire safety measure. Always maintain proper fire safety equipment and procedures....
